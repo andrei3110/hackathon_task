@@ -1,16 +1,19 @@
+
+let quote = 60;
+let variate = 5
+let ballence = 100
+let data2 = []
+
+
 const chartOptions = { layout: { textColor: 'black', background: { type: 'solid', color: 'white' } } };
 const chart = LightweightCharts.createChart(document.getElementById('chart1'));
-const btn = document.getElementById("click")
+
 
 const candlestickSeries = chart.addCandlestickSeries({
     upColor: '#26a69a', downColor: '#ef5350', borderVisible: false,
     wickUpColor: '#26a69a', wickDownColor: '#ef5350',
 });
-let quote = 60;
-let variate = 5
-let ballence = 100
 
-let data2 = []
 
 let openQuote = quote
 var app = new Vue({
@@ -67,22 +70,23 @@ let timeframe = setInterval(async function () {
         'headers': {
             'Content-Type': 'application/json',
         }
-    }).then((response) => 
-    { 
-      
+    }).then((response) => {
+
     });
-    
-    
+
+
     candlestickSeries.setData(data2);
 
     openQuote = quote
 
-    if (data2.length == 2000) {
+    if (data2.length == 1000) {
+        await fetch('/buyCript');
         data2.shift()
         candlestickSeries.setData(data2);
     }
     app.count = quote
 
-}, 100)
+}, 1000)
 
 chart.timeScale().fitContent();
+

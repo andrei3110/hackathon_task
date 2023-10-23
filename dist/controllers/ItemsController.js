@@ -18,10 +18,38 @@ class ItemsController {
             res.render('home');
         });
     }
+    getUserData(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const users = yield prisma.users.findMany({
+                where: {
+                    id: 1
+                }
+            });
+            res.status(200).json(users);
+        });
+    }
+    bitcoin(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            res.render('bitcoin');
+        });
+    }
     data(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const items = yield prisma.items.findMany();
             res.status(200).json(items);
+        });
+    }
+    clicker(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield prisma.users.update({
+                where: {
+                    id: 1
+                },
+                data: {
+                    balance: req.body.count
+                }
+            });
+            res.status(200).end();
         });
     }
     createData(req, res) {
@@ -40,7 +68,13 @@ class ItemsController {
     }
     buyCript(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            res.status(200);
+            const items = yield prisma.items.findMany({ take: 1 });
+            yield prisma.items.delete({
+                where: {
+                    id: items[0].id
+                }
+            });
+            res.redirect("/");
         });
     }
 }

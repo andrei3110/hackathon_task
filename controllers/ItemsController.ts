@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { items, PrismaClient } from '@prisma/client';
+import { items,users, PrismaClient } from '@prisma/client';
 
 const prisma: PrismaClient = new PrismaClient();
 
@@ -10,12 +10,33 @@ export class ItemsController {
     async index(req: Request, res: Response) {
         res.render('home');
     }
-
+    async getUserData(req: Request, res: Response) {
+        const users = await prisma.users.findMany({
+            where:{
+                id: 1
+            }
+        })
+        res.status(200).json(users)
+    }
+    async bitcoin(req: Request, res: Response) {
+        res.render('bitcoin');
+    }
     async data(req: Request, res: Response) {
        const items = await prisma.items.findMany()
         res.status(200).json(items);
     }
+    async clicker(req: Request, res: Response) {
 
+        await prisma.users.update({
+            where:{
+                id: 1
+            },
+            data:{
+                balance:req.body.count
+            }
+        })
+        res.status(200).end()
+    }
     async createData(req: Request, res: Response) {
         await prisma.items.create({
             data:{
@@ -29,6 +50,13 @@ export class ItemsController {
         res.status(200).end()
     }
     async buyCript(req: Request, res: Response) {
-        res.status(200)
+        const items = await prisma.items.findMany({take:1})
+
+        await prisma.items.delete({
+            where:{
+                id:items[0].id
+            }
+        })
+        res.redirect("/")
     }
 }

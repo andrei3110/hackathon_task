@@ -1,15 +1,47 @@
 <%- include('particles/header.ejs') %>
 
     <%- include('particles/navigation.ejs') %>
+        <div id="information">
+            ваш баланс:{{ balance }}
+        </div>
 
-        <div id="chart1" style="width: 800px; height: 400px; text-align: center; margin: 0 auto; border:solid 2px gray">
-        </div>
-        <div id="app">
-            цена криптовалюты: {{count}} $
-        </div>
-        <form action="/buyCript" method="post">
-            <input name="count" placeholder="count...">
-            <input type="submit">
-        </form>
-       
+        <a href="/bitcoin">bitcoin</a>
+
+        <button id="clicker">Clicker</button>
+        <script>
+            let balance = 0
+            let userData1 = []
+            const btn = document.getElementById('clicker')
+            let information = new Vue({
+                el: '#information',
+                data: {
+                    balance: balance
+                }
+            })
+            async function start() {
+                userData1 = []
+                let response2 = await fetch('/getUserData');
+                let userData = await response2.json();
+                balance = userData[0].balance
+
+
+                information.balance = balance
+            }
+            start()
+
+            btn.addEventListener('click', async () => {
+                balance = balance + 10
+                fetch('/clicker', {
+                    'method': 'POST',
+                    'body': JSON.stringify({
+                        count: balance,
+                    }),
+                    'headers': {
+                        'Content-Type': 'application/json',
+                    }
+                }).then((response) => { })
+                information.balance = balance
+            })
+
+        </script>
         <%- include('particles/footer.ejs') %>

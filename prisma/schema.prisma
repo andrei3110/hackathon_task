@@ -19,3 +19,8 @@ model items{
   low   Int? @db.Int
 
 }
+
+model users{
+  id       Int           @id @default(autoincrement())
+  balance  Int?          @db.Int
+}
