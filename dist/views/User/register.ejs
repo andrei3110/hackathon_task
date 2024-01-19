@@ -1,0 +1,13 @@
+<%- include('../particles/header.ejs') %>
+
+<%- include('../particles/navigation.ejs') %>
+    <div class="bg-red-100">
+        <form action="/register" method="post">
+            REGISTER
+            <input name="name" placeholder="name">
+            <input name ="email" type="email" placeholder="email">
+            <input name="password" type="password" placeholder="password">
+            <input type="submit" value="Send">
+        </form>
+    </div>
+<%- include('../particles/footer.ejs') %>

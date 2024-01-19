@@ -15,66 +15,46 @@ const prisma = new client_1.PrismaClient();
 class ItemsController {
     index(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            res.render('home');
-        });
-    }
-    getUserData(req, res) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const users = yield prisma.users.findMany({
-                where: {
-                    id: 1
-                }
+            res.render('home', {
+                auth: req.session.auth,
+                userId: req.session.userId,
+                admin: req.session.admin
             });
-            res.status(200).json(users);
         });
     }
-    bitcoin(req, res) {
+    getCreate(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            res.render('bitcoin');
+            const category = yield prisma.category.findMany();
+            res.render('Items/create', {
+                category: category,
+                auth: req.session.auth,
+                userId: req.session.userId,
+                admin: req.session.admin
+            });
         });
     }
-    data(req, res) {
+    postCreate(req, res) {
+        var _a;
         return __awaiter(this, void 0, void 0, function* () {
-            const items = yield prisma.items.findMany();
-            res.status(200).json(items);
-        });
-    }
-    clicker(req, res) {
-        return __awaiter(this, void 0, void 0, function* () {
-            yield prisma.users.update({
-                where: {
-                    id: 1
-                },
+            const { title, description } = req.body;
+            const items = yield prisma.item.create({
                 data: {
-                    balance: req.body.count
+                    title: title,
+                    description: description,
+                    image: String((_a = req.file) === null || _a === void 0 ? void 0 : _a.originalname),
+                    author: {
+                        connect: {
+                            id: Number(req.session.userId)
+                        }
+                    },
+                    category: {
+                        connect: {
+                            id: Number(req.body.check_category)
+                        }
+                    }
                 }
             });
-            res.status(200).end();
-        });
-    }
-    createData(req, res) {
-        return __awaiter(this, void 0, void 0, function* () {
-            yield prisma.items.create({
-                data: {
-                    time: req.body.time,
-                    open: req.body.open,
-                    close: req.body.close,
-                    high: req.body.high,
-                    low: req.body.low
-                }
-            });
-            res.status(200).end();
-        });
-    }
-    buyCript(req, res) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const items = yield prisma.items.findMany({ take: 1 });
-            yield prisma.items.delete({
-                where: {
-                    id: items[0].id
-                }
-            });
-            res.redirect("/");
+            res.redirect('/create');
         });
     }
 }

@@ -1,0 +1,9 @@
+<%- include('../particles/header.ejs') %>
+
+<%- include('../particles/navigation.ejs') %>
+    <div class="bg-red-100">ITEMS</div>
+    <% for (let i=0; i < categories.length; i++) { %>
+        <a href="/category/<%= categories[i].id %>"><%= categories[i].title %></a>
+    <% } %>
+    </div>
+<%- include('../particles/footer.ejs') %>

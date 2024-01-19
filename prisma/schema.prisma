@@ -10,17 +10,37 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model items{
+model Item{
   id    Int           @id @default(autoincrement())
-  time  Int? @db.Int
-  open  Int? @db.Int
-  close Int? @db.Int
-  high  Int? @db.Int
-  low   Int? @db.Int
-
+  title String        @db.VarChar(255)
+  description String  @db.Text
+  image     String    @db.VarChar(255)
+  author   User @relation(fields: [authorId], references: [id])
+  authorId Int
+  category Category @relation(fields: [categoryId], references: [id])
+  categoryId Int 
+  users Cart[] 
 }
 
-model users{
+model User{
   id       Int           @id @default(autoincrement())
-  balance  Int?          @db.Int
+  name     String        @db.VarChar(255)
+  password String        @db.VarChar(255)
+  email    String         @unique   
+  role     String        @db.VarChar(255)
+  items Item[]
+  Items Cart[]
+}
+model Category{
+  id       Int           @id @default(autoincrement())
+  title     String        @db.VarChar(255)
+  items Item[]
+}
+model Cart{
+  items      Item    @relation(fields:[itemId], references: [id])
+  itemId        Int
+  users     User @relation(fields:[userId], references: [id])
+  userId       Int
+
+  @@id([itemId, userId])
 }

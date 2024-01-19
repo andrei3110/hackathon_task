@@ -1,0 +1,19 @@
+<%- include('../particles/header.ejs') %>
+
+<%- include('../particles/navigation.ejs') %>
+    <div class="bg-red-100">ITEMS</div>
+    <% for (let i=0; i < items.length; i++) { %>
+        <div class="p-4 w-52 bg-gray-100">
+            <div class=""><%= items[i].title %></div>
+            <div class=""><%= items[i].author.name %></div>
+            <img class="w-36" src="/img/<%= items[i].image %>">
+            <div class=""><%= items[i].description %></div>
+            
+            <form action="/save/<%= items[i].id %>" method="post">
+                <input name="categoryId" type="hidden" value="<%= categoryId %>">
+                <input type="submit" value="save">
+            </form>
+        </div>
+    <% } %>
+    </div>
+<%- include('../particles/footer.ejs') %>
