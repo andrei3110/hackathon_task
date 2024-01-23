@@ -1,12 +1,16 @@
 import express, { Express, Request, Response } from 'express';
 import path from 'path';
 import multer from 'multer';
-import { ItemsController } from '../controllers/ItemsController';
+import { StudentsController } from '../controllers/StudentsController';
 import { AuthController } from '../controllers/AuthController';
-import { CategoryController } from '../controllers/CategoryController';
-const itemsController = new ItemsController();
+import { EventController } from '../controllers/EventController';
+import { SchoolController } from '../controllers/SchoolController';
+
+const studentsController = new StudentsController();
 const authController = new AuthController();
-const categoryController = new CategoryController();
+const eventController = new EventController();
+const schoolController = new SchoolController();
+
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, "public/img");
@@ -19,26 +23,28 @@ const upload = multer({ storage: storage });
 
 export function registerRoutes(app: Express) {
     app.get("/", (req: Request, res: Response) => {
-        itemsController.index(req, res);
+      studentsController.index(req, res);
       });
       app.get("/create",(req: Request, res: Response) => {
-        itemsController.getCreate(req, res);
+        studentsController.getCreate(req, res);
+      }); 
+      app.get("/update/:id",(req: Request, res: Response) => {
+        studentsController.getUpdate(req, res);
+      }); 
+      app.post("/update/:id",(req: Request, res: Response) => {
+        studentsController.postUpdate(req, res);
+      }); 
+      app.get("/students",(req: Request, res: Response) => {
+        studentsController.getStudents(req, res);
+      }); 
+      app.get("/create_events",(req: Request, res: Response) => {
+        eventController.getCreate_Events(req, res);
       });
-      app.get("/category",(req: Request, res: Response) => {
-        categoryController.getCategory(req, res);
+      app.get("/schools",(req: Request, res: Response) => {
+        schoolController.getSchool(req, res);
       });
-      app.get("/category/:id",(req: Request, res: Response) => {
-        categoryController.category(req, res);
-      });
-      app.post("/save/:id",(req: Request, res: Response) => {
-        categoryController.saveToCart(req, res);
-      });
-      app.post("/delete_save/:id",(req: Request, res: Response) => {
-        categoryController.unsaveCart(req, res);
-      });
-      
-      app.get("/cart",(req: Request, res: Response) => {
-        categoryController.getCart(req, res);
+      app.post("/create_school",(req: Request, res: Response) => {
+        schoolController.postCreate_School(req, res);
       });
       // AUTH
       app.get("/logout", (req: Request, res: Response) => {
@@ -57,6 +63,9 @@ export function registerRoutes(app: Express) {
         authController.postLogin(req, res);
       });
       app.post("/create",upload.single("file"), (req: Request, res: Response) => {
-        itemsController.postCreate(req, res);
+        studentsController.postCreate(req, res);
+      });
+      app.post("/create_event",upload.single("file"), (req: Request, res: Response) => {
+        eventController.postCreate_Event(req, res);
       });
 }

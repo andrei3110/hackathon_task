@@ -17,17 +17,17 @@ async function user() {
         }
     );
 }
-async function category() {
-    const category = await prisma.category.createMany({
+async function schools() {
+    const school = await prisma.schools.createMany({
         data: [
             { 
-                title: "category1" ,
+                name: "school_1" ,
             },
             { 
-                title: "category2" ,
+                name: "school_2" ,
             },
             { 
-                title: "category3" ,
+                name: "school_3" ,
             },
             
         ],
@@ -35,8 +35,26 @@ async function category() {
         }
     );
 }
-category()
-user()
+async function Top_places() {
+    const Top_places = await prisma.Top_places.createMany({
+        data: [
+            { 
+                title: "I" ,
+            },
+            { 
+                title: "II" ,
+            },
+            { 
+                title: "III" ,
+            },
+            
+        ],
+        skipDuplicates: true
+        }
+    );
+}
+schools()
+Top_places()
     .then(async () => {
         await prisma.$disconnect()
     })

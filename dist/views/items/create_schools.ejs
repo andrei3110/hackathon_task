@@ -1,0 +1,11 @@
+<%- include('../particles/header.ejs') %>
+
+    <%- include('../particles/navigation.ejs') %>
+        <div class="label">CREATE SCHOOLS</div>
+        <div class="box">
+            <form action="/create_school" method="post">
+                <input class="name" name="name" placeholder="school_Name" required>
+                <input class="login-button" type="submit" value="send">
+            </form>
+        </div>
+        <%- include('../particles/footer.ejs') %>

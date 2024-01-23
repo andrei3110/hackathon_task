@@ -1,13 +1,21 @@
 <%- include('../particles/header.ejs') %>
 
 <%- include('../particles/navigation.ejs') %>
-    <div class="bg-red-100">
+    <div class="login_box">
         <form action="/register" method="post">
-            REGISTER
-            <input name="name" placeholder="name">
-            <input name ="email" type="email" placeholder="email">
-            <input name="password" type="password" placeholder="password">
-            <input type="submit" value="Send">
+            <div class="label">REGISTER</div>
+            <input class="name" name="username" placeholder="name">
+            <input class="password" name="password" type="password" placeholder="password">
+            <% for (let i=0; i < schools.length; i++) { %>
+                <div class="create__radio__items">
+                    <input type="radio" class="block float-left left-20 relative " name="check_school"
+                        value="<%= schools[i].id %>">
+                    <label class="radio__items">
+                        <%= schools[i].name %>
+                    </label>
+                </div>
+                <% } %>
+            <input class='login-button' type="submit" value="Send">
         </form>
     </div>
 <%- include('../particles/footer.ejs') %>

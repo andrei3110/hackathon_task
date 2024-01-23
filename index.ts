@@ -14,7 +14,7 @@ app.use(express.json())
 declare module "express-session" {
   interface SessionData {
     auth: boolean,
-    userId:number,
+    
     admin:boolean,
   }
 };

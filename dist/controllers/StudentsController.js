@@ -9,15 +9,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ItemsController = void 0;
+exports.StudentsController = void 0;
 const client_1 = require("@prisma/client");
 const prisma = new client_1.PrismaClient();
-class ItemsController {
+class StudentsController {
     index(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             res.render('home', {
                 auth: req.session.auth,
-                userId: req.session.userId,
                 admin: req.session.admin
             });
         });
@@ -26,6 +25,7 @@ class ItemsController {
         return __awaiter(this, void 0, void 0, function* () {
             const student = yield prisma.students.findMany({
                 select: {
+                    id: true,
                     first_Name: true,
                     last_Name: true,
                     date_of_birth: true,
@@ -43,7 +43,6 @@ class ItemsController {
                 }
             });
             let students = [];
-            // console.log(students[0].event)
             for (let j = 0; j < student.length; j++) {
                 for (let i = 0; i < student[j].event.top_places.length; i++) {
                     const places = yield prisma.top_places.findMany({
@@ -51,7 +50,9 @@ class ItemsController {
                             id: student[j].event.top_places[i].top_placesId
                         }
                     });
-                    students.push({ first_Name: student[j].first_Name,
+                    students.push({
+                        id: student[j].id,
+                        first_Name: student[j].first_Name,
                         last_Name: student[j].last_Name,
                         date: student[j].date_of_birth,
                         school: student[j].school.name,
@@ -60,11 +61,9 @@ class ItemsController {
                     });
                 }
             }
-            res.render('Items/items', {
+            res.render('Items/students', {
                 students: students,
-                // top_places:top_places,
                 auth: req.session.auth,
-                userId: req.session.userId,
                 admin: req.session.admin
             });
         });
@@ -79,37 +78,55 @@ class ItemsController {
                 top_places: top_places,
                 events: events,
                 auth: req.session.auth,
-                userId: req.session.userId,
                 admin: req.session.admin
             });
         });
     }
-    getCreate_Events(req, res) {
+    getUpdate(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const schools = yield prisma.schools.findMany();
-            res.render('Items/create_events', {
+            const top_places = yield prisma.top_places.findMany();
+            const events = yield prisma.events.findMany();
+            res.render(`Items/update`, {
                 schools: schools,
+                id: req.params.id,
+                top_places: top_places,
+                events: events,
                 auth: req.session.auth,
-                userId: req.session.userId,
                 admin: req.session.admin
             });
         });
     }
-    postCreate_Event(req, res) {
+    postUpdate(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { name, date, check_school } = req.body;
-            yield prisma.events.create({
+            const { first_Name, last_Name, date_of_birth, check_school, check_events, check_top_places } = req.body;
+            const student = yield prisma.students.update({
+                where: {
+                    id: Number(req.params.id)
+                },
                 data: {
-                    name: name,
-                    date: date,
+                    first_Name: String(first_Name),
+                    last_Name: String(last_Name),
+                    date_of_birth: String(date_of_birth),
                     school: {
                         connect: {
                             id: Number(check_school)
                         }
+                    },
+                    event: {
+                        connect: {
+                            id: Number(check_events)
+                        }
                     }
                 }
             });
-            res.redirect('/create_events');
+            const events_top_places = yield prisma.events_top_places.create({
+                data: {
+                    top_placesId: Number(check_top_places),
+                    eventId: Number(check_events)
+                }
+            });
+            res.redirect('/students');
         });
     }
     postCreate(req, res) {
@@ -142,5 +159,5 @@ class ItemsController {
         });
     }
 }
-exports.ItemsController = ItemsController;
-//# sourceMappingURL=ItemsController.js.map
+exports.StudentsController = StudentsController;
+//# sourceMappingURL=StudentsController.js.map

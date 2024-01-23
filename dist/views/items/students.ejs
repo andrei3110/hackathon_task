@@ -1,0 +1,17 @@
+<%- include('../particles/header.ejs') %>
+
+<%- include('../particles/navigation.ejs') %>
+    <div class="label">STUDENTS</div>
+    <% for (let i=0; i < students.length; i++) { %>
+        <div class="student_card">
+            <div class="student_item">ФИО: <div class="student_item_value"><%= students[i].first_Name %> <%= students[i].last_Name %></div></div>
+            <div class="student_item">Дата рождения: <div class="student_item_value"><%= students[i].date %></div></div>
+            <div class="student_item">Школа: <div class="student_item_value"><%= students[i].school %></div></div>
+            <div class="student_item">Мероприятие: <div class="student_item_value"><%= students[i].event %></div></div>
+            <div class="student_item">Призовое место: <div class="student_item_value"><%= students[i].top_place %></div></div>
+            
+        </div>
+        <a href="/update/<%= students[i].id %>">update</a>
+    <% } %>
+    </div>
+<%- include('../particles/footer.ejs') %>

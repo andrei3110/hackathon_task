@@ -10,37 +10,63 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Item{
-  id    Int           @id @default(autoincrement())
-  title String        @db.VarChar(255)
-  description String  @db.Text
-  image     String    @db.VarChar(255)
-  author   User @relation(fields: [authorId], references: [id])
-  authorId Int
-  category Category @relation(fields: [categoryId], references: [id])
-  categoryId Int 
-  users Cart[] 
+model Users{
+  id       Int           @id @default(autoincrement())
+  username     String        @db.VarChar(255)
+  password     String        @db.VarChar(255)
+  school       Schools @relation(fields: [schoolId], references: [id])
+  schoolId     Int 
+}
+model Students{
+  id       Int           @id @default(autoincrement())
+  first_Name     String        @db.VarChar(255)
+  last_Name       String        @db.VarChar(255)
+  date_of_birth   String         @db.VarChar(255)
+  school Schools @relation(fields: [schoolId], references: [id])
+  schoolId Int
+  event   Events @relation(fields: [eventId], references: [id])
+  eventId Int 
+  
 }
 
-model User{
-  id       Int           @id @default(autoincrement())
-  name     String        @db.VarChar(255)
-  password String        @db.VarChar(255)
-  email    String         @unique   
-  role     String        @db.VarChar(255)
-  items Item[]
-  Items Cart[]
-}
-model Category{
+model Top_places{
   id       Int           @id @default(autoincrement())
   title     String        @db.VarChar(255)
-  items Item[]
-}
-model Cart{
-  items      Item    @relation(fields:[itemId], references: [id])
-  itemId        Int
-  users     User @relation(fields:[userId], references: [id])
-  userId       Int
+  events  Events_top_places[]
 
-  @@id([itemId, userId])
+}
+
+model Events {
+  id       Int           @id @default(autoincrement())
+  name     String @db.VarChar(255)
+  date     String @db.VarChar(255)
+  school   Schools @relation(fields: [schoolId], references: [id])
+  schoolId Int 
+  students Students[]
+  top_places Events_top_places[]
+  
+}
+
+model Schools{
+  id       Int           @id @default(autoincrement())
+  name     String        @db.VarChar(255)
+ 
+  student Students[]
+  users Users[]
+  events Events[]
+}
+
+model Roles{
+  id       Int           @id @default(autoincrement())
+  name     String        @db.VarChar(255)
+ 
+}
+
+model Events_top_places{
+  events      Events    @relation(fields:[eventId], references: [id])
+  eventId        Int
+  top_places     Top_places @relation(fields:[top_placesId], references: [id])
+  top_placesId       Int
+
+  @@id([eventId, top_placesId])
 }

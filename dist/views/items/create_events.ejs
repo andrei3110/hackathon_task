@@ -1,0 +1,22 @@
+<%- include('../particles/header.ejs') %>
+
+    <%- include('../particles/navigation.ejs') %>
+        <div class="label">CREATE EVENTS</div>
+        <div class="box">
+            <form action="/create_event" enctype="multipart/form-data" method="post">
+                <input name="name" placeholder="first_Name" required>
+                <input name="date" type="date" placeholder="date" required>
+                <% for (let i=0; i < schools.length; i++) { %>
+                    <div class="create__radio__items">
+                        <input type="radio" class="block float-left left-20 relative " name="check_school"
+                            value="<%= schools[i].id %>" >
+                        <label class="radio__items">
+                            <%= schools[i].name %>
+                        </label>
+                    </div>
+                <% } %>
+
+                        <input class="login-button" type="submit" value="send">
+            </form>
+        </div>
+        <%- include('../particles/footer.ejs') %>

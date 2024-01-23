@@ -6,20 +6,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nature</title>
 
-    <link href="/css/style.css" rel="stylesheet">
+    <link href="/css/app.css" rel="stylesheet">
 
 </head>
-    <div class="w-full bg-gray-100 h-24">
-        <% if(auth){ %>
-            <a href="logout">logout</a>
-            <a href="/create">create</a>
-            <a href="/cart">cart</a>
-        <% } else { %>
-            <a href="/login">Sign In</a>
-            <a href="/register">Sign up</a>
+    <div class="header">
+        <div class="link-header">
+            <a href="/students">students</a>
+            <% if(auth){ %>
+                <% if(admin){ %>
+                    <a class='' href="/create">create</a>
+                    <a href="/create_events">create events</a>
+                    <a href="/schools">create schools</a>
+                <% } %>
+                <a href="logout">logout</a>
+                
+            <% } else { %>
+                <a href="/login">Sign In</a>
+                <a href="/register">Sign up</a>
+                
+                
+            <% } %>
             
-            
-        <% } %>
-        <a href="/category">categories</a>
+        </div>
+        
     </div>
 <body>
+    <div class="content">

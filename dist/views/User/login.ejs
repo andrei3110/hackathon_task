@@ -1,13 +1,16 @@
 <%- include('../particles/header.ejs') %>
 
 <%- include('../particles/navigation.ejs') %>
-    <div class="bg-red-100">
+    <div class="login_box">
         <form action="/login" method="post">
-            LOGIN
-            <input name="name" placeholder="name">
-            <input name ="email" type="email" placeholder="email">
-            <input name="password" type="password" placeholder="password">
-            <input type="submit" value="Send">
+           <div class="label">LOGIN</div> 
+            <div class="card-auth">
+                <input class="name" name="username" placeholder="name">
+          
+                <input class="password" name="password" type="password" placeholder="password">
+            </div>
+       
+            <input class="login-button" type="submit" value="Send">
         </form>
     </div>
 <%- include('../particles/footer.ejs') %>

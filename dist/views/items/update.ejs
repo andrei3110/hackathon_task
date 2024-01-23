@@ -3,7 +3,7 @@
     <%- include('../particles/navigation.ejs') %>
         <div class="bg-red-100">CREATE</div>
         <div class="">
-            <form action="/create" enctype="multipart/form-data" method="post">
+            <form action="/update/<%= id %>" enctype="multipart/form-data" method="post">
                 <input name="first_Name" placeholder="first_Name" required>
                 <input name="last_Name" placeholder="last_Name" required>
                 <input name="date_of_birth" type="date" placeholder="date_of_birth" required>
